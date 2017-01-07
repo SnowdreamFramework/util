@@ -2,6 +2,7 @@ apply plugin: 'com.android.library'
 apply from: "${rootDir}/gradle/plugins/util.gradle"
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'org.jetbrains.dokka-android'
 
 dependencies {
     compile  fileTree(dir: 'libs', include: '*.jar')
@@ -93,4 +94,19 @@ android.libraryVariants.all { variant ->
         exclude '**/BuildConfig.java'
         exclude '**/R.java'
     }
+}
+
+dokka {
+    moduleName = 'util'
+    outputFormat = 'javadoc'
+    outputDirectory = "$buildDir/javadoc"
+    processConfigurations = ['compile', 'extra']
+    includes = ['packages.md', 'extra.md']
+    samples = ['samples/basic.kt', 'samples/advanced.kt']
+    linkMapping {
+        dir = "src/main/kotlin"
+        url = "https://github.com/SnowdreamFramework/util/blob/master/src/main/kotlin"
+        suffix = "#L"
+    }
+    sourceDirs = files('src/main/kotlin')
 }

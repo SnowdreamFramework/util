@@ -1,0 +1,32 @@
+ext {
+    deps = [
+            //android
+            "android-gradle-plugin"              : 'com.android.tools.build:gradle:2.2.2',
+            "android-support-appcompat-v7"       : 'com.android.support:appcompat-v7:25.1.1',
+            "android-support-support-annotations": 'com.android.support:support-annotations:25.1.1',
+            "android-support-design"             : 'com.android.support:design:25.1.1',
+            "android-support-multidex"           : 'com.android.support:multidex:1.0.1',
+            "android-support-espresso"           : 'com.android.support.test.espresso:espresso-core:2.2.2',
+
+            //java
+            "junit"                              : "junit:junit:4.12",
+
+            //maven
+            "android-maven-gradle-plugin"        : "com.github.dcendents:android-maven-gradle-plugin:1.5",
+            "gradle-bintray-plugin"              : 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.1',
+
+            //kotlin and dokka
+            "kotlin-gradle-plugin"               : "org.jetbrains.kotlin:kotlin-gradle-plugin:1.1.1",
+            "kotlin-stdlib"                      : "org.jetbrains.kotlin:kotlin-stdlib:1.1.1",
+            "kotlin-reflect"                     : "org.jetbrains.kotlin:kotlin-reflect:1.1.1",
+            "dokka-android-gradle-plugin"        : "org.jetbrains.dokka:dokka-android-gradle-plugin:0.9.13",
+            "dokka-gradle-plugin"                : "org.jetbrains.dokka:dokka-gradle-plugin:0.9.13",
+
+            //snowdream
+            "android-toybricks-gradle-plugin"    : "com.github.snowdream.toybricks:android-toybricks-gradle-plugin:0.9.10",
+            "snowdream-annotation"               : "com.github.snowdream:annotation:0.7@aar",
+            "android-toybricks-processor"               : "com.github.snowdream.toybricks:processor:0.9.10",
+            "android-toybricks-annotation"               : "com.github.snowdream.toybricks:annotation:0.9.10",
+            "android-toybricks"               : "com.github.snowdream:toybricks:0.9.10@aar",
+    ]
+}

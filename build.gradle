@@ -1,11 +1,10 @@
 buildscript {
-    ext.kotlin_version = '1.0.5-2'
-    ext.dokka_version = '0.9.11'
+    apply from: "${rootDir}/gradle/plugins/dependencies.gradle"
 
     repositories {
         maven { url  'file:///' + System.getenv("ANDROID_HOME")+ '/extras/android/m2repository/'}
         maven { url  'file:///' + new File(System.getProperty('user.home'), '.m2/repository').absolutePath}
-        //maven { url 'http://maven.aliyun.com/nexus/content/groups/public' }
+        maven { url 'http://maven.aliyun.com/nexus/content/groups/public' }
         jcenter { url "http://jcenter.bintray.com/"}
         maven { url "http://repo1.maven.org/maven2"}
         maven { url "https://jitpack.io" }
@@ -13,20 +12,34 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.2'
-        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5' //for bintray_push.gradle
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.1'//for bintray_push.gradle
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version" //for kotlin
-        classpath "org.jetbrains.dokka:dokka-android-gradle-plugin:${dokka_version}" //for kotlin dokka
+        //android
+        classpath deps.'android-gradle-plugin'
+
+        //maven
+        classpath deps.'android-maven-gradle-plugin'
+        classpath deps.'gradle-bintray-plugin'
+
+        //kotlin and dokka
+        classpath deps.'kotlin-gradle-plugin'
+        classpath deps.'dokka-android-gradle-plugin'
+        classpath deps.'dokka-gradle-plugin'
+
+        //snowdream
+        classpath deps.'android-toybricks-gradle-plugin'
+//        classpath files('plugin/build/libs/android-toybricks-gradle-plugin-0.9.10.jar')
+//        classpath "com.github.snowdream.toybricks:annotation:0.9.10"
+//        classpath 'com.squareup:javapoet:1.8.0'
     }
+
 }
 
 allprojects {
+    apply from: "${rootDir}/gradle/plugins/dependencies.gradle"
 
     repositories {
         maven { url  'file:///' + System.getenv("ANDROID_HOME")+ '/extras/android/m2repository/'}
         maven { url  'file:///' + new File(System.getProperty('user.home'), '.m2/repository').absolutePath}
-        //maven { url 'http://maven.aliyun.com/nexus/content/groups/public' }
+        maven { url 'http://maven.aliyun.com/nexus/content/groups/public' }
         jcenter { url "http://jcenter.bintray.com/"}
         maven { url "http://repo1.maven.org/maven2"}
         maven { url "https://jitpack.io" }
@@ -36,11 +49,20 @@ allprojects {
     tasks.withType(JavaCompile) {
         options.encoding = "UTF-8"
     }
+
+    tasks.withType(Javadoc) {
+        options {
+            locale = 'en_US'
+            encoding = 'UTF-8'
+            charSet = 'UTF-8'
+            links("http://docs.oracle.com/javase/7/docs/api/")
+        }
+    }
 }
 
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '3.3'
+    gradleVersion = '3.5'
     distributionUrl = "http://android-mirror.bugly.qq.com:8080/gradle/gradle-${gradleVersion}-bin.zip"
 }
 

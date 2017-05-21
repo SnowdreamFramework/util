@@ -1,5 +1,6 @@
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
+apply plugin: 'org.jetbrains.dokka-android'
 apply from: "${rootDir}/gradle/plugins/util.gradle"
 
 group = optProperty("POM_GROUP_ID")
@@ -28,7 +29,7 @@ bintray {
 
     pkg {
         repo = "maven"
-        name = optProperty("POM_GROUP_ID") +":"+ optProperty("POM_ARTIFACT_ID")
+        name = "SnowdreamFramework" //optProperty("POM_GROUP_ID") +":"+ optProperty("POM_ARTIFACT_ID")
         userOrg = optProperty("BINTRAY_USER")
         websiteUrl = optProperty("POM_URL")
         issueTrackerUrl = optProperty("POM_ISSUE_MANAGEMENT_URL")
@@ -59,25 +60,38 @@ bintray {
 
 task androidReleaseJar(type: Jar,dependsOn: "assembleRelease") {
     from "$buildDir/intermediates/classes/release/"
+    from "$buildDir/generated/source/kapt/release/ToyBricks.json"
+    from "$buildDir/generated/source/apt/release/ToyBricks.json"
     exclude '**/BuildConfig.class'
     exclude '**/R.class'
     exclude '**/R$*.class'
+    includeEmptyDirs false
 }
 
 task androidJavadocsJar(type: Jar) {
     classifier = 'javadoc'
     from "generateReleaseJavadoc.destinationDir"
+    includeEmptyDirs false
 }
 
 task androidSourcesJar(type: Jar) {
     classifier = 'sources'
     from android.sourceSets.main.java.srcDirs
+    from "$buildDir/generated/source/kapt/release/ToyBricks.json"
+    from "$buildDir/generated/source/apt/release/ToyBricks.json"
+    includeEmptyDirs false
+}
+
+task kotlinjavadocJar(type: Jar, dependsOn: dokka) {
+    classifier 'javadoc'
+    from "$buildDir/javadoc"
 }
 
 artifacts {
     archives androidReleaseJar
     archives androidSourcesJar
     archives androidJavadocsJar
+    archives kotlinjavadocJar
 }
 
 private configurePOM(def pom) {

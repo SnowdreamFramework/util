@@ -5,14 +5,25 @@ apply plugin: 'kotlin-android-extensions'
 
 dependencies {
     compile  fileTree(dir: 'libs', include: '*.jar')
-    compile 'com.android.support:appcompat-v7:24.2.1'
-    compile 'com.android.support:design:24.2.1'
-    compile 'com.android.support:support-annotations:24.2.1'
-    compile 'com.android.support:multidex:1.0.1'
 
-    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    //android
+    compile deps.'android-support-appcompat-v7'
+    compile deps.'android-support-support-annotations'
+    compile deps.'android-support-design'
+    compile deps.'android-support-multidex'
 
-    testCompile 'junit:junit:4.12'
+    //snowdream
+    compile deps.'snowdream-annotation'
+
+    //kotlin
+    compile deps.'kotlin-stdlib'
+
+    //java
+    testCompile deps.junit
+
+    androidTestCompile(deps.'android-support-espresso', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
 }
 
 android {
@@ -39,7 +50,7 @@ android {
     
     signingConfigs {
         release {
-          if (hasProperty("KEYSTORE")) {
+          if (containsProperty("KEYSTORE")) {
             storeFile file(optProperty("KEYSTORE"))
             storePassword optProperty("KEYSTORE_PASSWORD")
             keyAlias optProperty("KEY_ALIAS")
@@ -52,7 +63,7 @@ android {
         release {
             minifyEnabled true
             shrinkResources true
-            proguardFile getDefaultProguardFile('proguard-android.txt')
+            proguardFiles "${rootDir}/gradle/proguard/proguard-android-app-optimize.txt", 'proguard-rules.pro'
             signingConfig signingConfigs.release
         }
     }
